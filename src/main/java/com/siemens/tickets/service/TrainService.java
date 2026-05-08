@@ -50,8 +50,12 @@ public class TrainService {
                 trainId, date, email, seats
         );
         bookingRepository.save(booking);
-        emailService.send(email, "Booking confirmation",
-                "Booking " + booking.getBookingId() + " confirmed for train " + trainId + " on " + date);
+        try {
+            emailService.send(email, "Booking confirmation",
+                    "Booking " + booking.getBookingId() + " confirmed for train " + trainId + " on " + date);
+        } catch (Exception e) {
+            System.err.println("Email failed: " + e.getMessage());
+        }
         return booking;
     }
 
