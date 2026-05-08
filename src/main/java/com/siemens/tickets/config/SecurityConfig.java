@@ -36,7 +36,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/bookings").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-                .httpBasic(Customizer.withDefaults());
+                .httpBasic(basic -> basic.authenticationEntryPoint(
+                        (request, response, ex) -> response.sendError(401)
+                ));
 
         return http.build();
     }
