@@ -165,7 +165,7 @@
         <div class="card">
             <h2>Book a Ticket</h2>
             <div class="form-row">
-                <div><label>Train ID</label><input id="bookTrainId" placeholder="e.g. ICE100"/></div>
+                <div><label>Train</label><input id="bookTrainId" placeholder="Select a route above" readonly style="cursor:not-allowed; opacity:0.7;"/></div>
                 <div><label>Travel Date</label><input id="bookDate" type="date"/></div>
             </div>
             <div class="form-row">
@@ -274,19 +274,25 @@ Munich,12:10,12:10</textarea>
     const data = await res.json();
     if (!res.ok) { showResult(el, data.error, 'error'); return; }
 
-    el.innerHTML = data.map(leg =>
-        `<div class="leg" onclick="selectTrain('${leg.trainId}')" style="cursor:pointer;" title="Click to select this train">
-            <span class="leg-train">${leg.trainId}</span> · ${leg.fromStation} → ${leg.toStation}<br/>
-            <span class="leg-time">${leg.depart} → ${leg.arrive}</span>
-        </div>`
-    ).join('');
+    el.innerHTML = `
+        <div style="margin-bottom:0.6rem; font-size:0.82rem; color:var(--muted);">
+            Select a leg below to use that train for booking.
+        </div>` +
+        data.map(leg =>
+            `<div class="leg" onclick="selectTrain('${leg.trainId}', this)" style="cursor:pointer;" title="Click to select this train">
+                <span class="leg-train">${leg.trainId}</span> · ${leg.fromStation} → ${leg.toStation}<br/>
+                <span class="leg-time">${leg.depart} → ${leg.arrive}</span>
+            </div>`
+        ).join('');
     el.className = 'result info';
 }
 
-function selectTrain(trainId) {
+function selectTrain(trainId, el) {
     document.getElementById('bookTrainId').value = trainId;
     document.querySelectorAll('.leg').forEach(l => l.style.background = '');
-    event.currentTarget.style.background = 'rgba(108,142,255,0.15)';
+    el.style.background = 'rgba(108,142,255,0.2)';
+    document.getElementById('bookTrainId').style.opacity = '1';
+    document.getElementById('bookTrainId').style.borderColor = 'var(--accent)';
 }
 
     async function bookTicket() {
