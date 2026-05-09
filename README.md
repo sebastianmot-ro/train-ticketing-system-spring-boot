@@ -85,17 +85,17 @@ To remove this restriction on the deployed version, a custom domain needs to be 
 
 ### Customer — Find Path
 
-Select an origin and destination from the dropdowns. Click **Find Path**. If a route exists, the legs of the journey are displayed. Clicking a leg automatically fills in the Train ID field in the booking form below.
+Select an origin and destination from the dropdowns. Click Find Path. If a route exists, the legs of the journey are displayed along with an instruction to select one. Clicking a leg highlights it and automatically fills in the Train field in the booking form below. If no route exists, an error is shown.
 
 <img width="896" height="794" alt="1 1" src="https://github.com/user-attachments/assets/7b4853f5-ccb8-4e12-864d-23d28f69551f" />
-<img width="902" height="892" alt="1 2" src="https://github.com/user-attachments/assets/47a092f4-694c-41a3-845a-bd761cacff6f" />
+<img width="831" height="912" alt="image" src="https://github.com/user-attachments/assets/eecf61f5-695e-4b4d-bf6c-8331ec2c5fa7" />
 
 
 ### Customer — Book a Ticket
 
 <img width="706" height="772" alt="2 1" src="https://github.com/user-attachments/assets/dc578fb5-005d-4392-9cca-79da6811219d" />
 
-Fill in the Train ID (or click a path leg to auto-fill), travel date, email address, and number of seats. Click **Book**. The system blocks overbooking based on remaining capacity for that train and date. On success, a confirmation is shown in the UI and a confirmation email is sent to the provided address.
+Select a route leg above to populate the Train field — it is not editable directly. Fill in a valid travel date (past dates are rejected), a valid email address, and the number of seats (between 1 and 20). All fields are validated before the request is sent. The system also blocks overbooking server-side based on remaining capacity for that train and date. On success, a confirmation is shown in the UI and a confirmation email is sent to the provided address.
 
 <img width="1546" height="209" alt="2 2" src="https://github.com/user-attachments/assets/f7aaf5e8-4452-4c66-a410-0f57936b81fe" />
 
