@@ -85,45 +85,49 @@ To remove this restriction on the deployed version, a custom domain needs to be 
 
 ### Customer — Find Path
 
-*(screenshots here)*
-
 Select an origin and destination from the dropdowns. Click **Find Path**. If a route exists, the legs of the journey are displayed. Clicking a leg automatically fills in the Train ID field in the booking form below.
+
+<img width="896" height="794" alt="1 1" src="https://github.com/user-attachments/assets/7b4853f5-ccb8-4e12-864d-23d28f69551f" />
+<img width="902" height="892" alt="1 2" src="https://github.com/user-attachments/assets/47a092f4-694c-41a3-845a-bd761cacff6f" />
+
 
 ### Customer — Book a Ticket
 
-*(screenshots here)*
+<img width="706" height="772" alt="2 1" src="https://github.com/user-attachments/assets/dc578fb5-005d-4392-9cca-79da6811219d" />
 
 Fill in the Train ID (or click a path leg to auto-fill), travel date, email address, and number of seats. Click **Book**. The system blocks overbooking based on remaining capacity for that train and date. On success, a confirmation is shown in the UI and a confirmation email is sent to the provided address.
 
-*(screenshots of confirmation email here)*
+<img width="1546" height="209" alt="2 2" src="https://github.com/user-attachments/assets/f7aaf5e8-4452-4c66-a410-0f57936b81fe" />
 
 Note: due to the Resend free plan limitation described above, email delivery in the deployed version is restricted to the account owner's address.
 
 ### Admin — Login
 
-*(screenshots here)*
+<img width="824" height="466" alt="3 1" src="https://github.com/user-attachments/assets/05d98e2a-e3ac-4cae-b5f5-e34b46c91212" />
 
 Switch to the Admin tab and enter credentials. The admin panel unlocks on successful authentication.
 
 ### Admin — Manage Trains
 
-*(screenshots here)*
+<img width="811" height="626" alt="3 2" src="https://github.com/user-attachments/assets/316fd78f-d5ff-408a-aa63-c2f2c5e37629" />
+<img width="735" height="244" alt="3 3" src="https://github.com/user-attachments/assets/730592a8-00dc-43aa-9f3c-10b591a87313" />
+
 
 Add a new train by providing an ID, name, capacity, and a list of stops in the format `StationName,HH:MM,HH:MM` (one per line, arrival and departure). Trains can also be deleted by ID. Any change to the train network is immediately reflected in the customer-facing dropdowns.
 
 ### Admin — Notify Delay
 
-*(screenshots here)*
+<img width="724" height="309" alt="3 4" src="https://github.com/user-attachments/assets/a6c60663-9f62-44c3-8ae3-7936beff6b3b" />
 
 Enter a Train ID and a delay description. All passengers who have booked that train receive an email notification.
 
-*(screenshots of delay email here)*
+<img width="1553" height="151" alt="3 5" src="https://github.com/user-attachments/assets/5e59d84a-adad-4dc5-a4dd-5cf4ef2a5d99" />
 
 Note: same Resend free plan restriction applies here.
 
 ### Admin — Bookings
 
-*(screenshots here)*
+<img width="706" height="462" alt="3 6" src="https://github.com/user-attachments/assets/5976ec86-b5ea-4911-8798-5b675a08ff45" />
 
 View all bookings across all trains and dates.
 
