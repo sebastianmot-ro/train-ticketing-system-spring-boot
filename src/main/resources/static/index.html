@@ -264,24 +264,30 @@ Munich,12:10,12:10</textarea>
     }
 
     async function findPath() {
-        const from = document.getElementById('fromStation').value;
-        const to = document.getElementById('toStation').value;
-        const el = document.getElementById('pathResult');
-        if (!from || !to) { showResult(el, 'Please select both origin and destination.', 'error'); return; }
-        if (from === to)  { showResult(el, 'Origin and destination must be different.', 'error'); return; }
+    const from = document.getElementById('fromStation').value;
+    const to = document.getElementById('toStation').value;
+    const el = document.getElementById('pathResult');
+    if (!from || !to) { showResult(el, 'Please select both origin and destination.', 'error'); return; }
+    if (from === to)  { showResult(el, 'Origin and destination must be different.', 'error'); return; }
 
-        const res = await fetch(`/api/path?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`);
-        const data = await res.json();
-        if (!res.ok) { showResult(el, data.error, 'error'); return; }
+    const res = await fetch(`/api/path?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`);
+    const data = await res.json();
+    if (!res.ok) { showResult(el, data.error, 'error'); return; }
 
-        el.innerHTML = data.map(leg =>
-            `<div class="leg">
-                <span class="leg-train">${leg.trainId}</span> · ${leg.fromStation} → ${leg.toStation}<br/>
-                <span class="leg-time">${leg.depart} → ${leg.arrive}</span>
-            </div>`
-        ).join('');
-        el.className = 'result info';
-    }
+    el.innerHTML = data.map(leg =>
+        `<div class="leg" onclick="selectTrain('${leg.trainId}')" style="cursor:pointer;" title="Click to select this train">
+            <span class="leg-train">${leg.trainId}</span> · ${leg.fromStation} → ${leg.toStation}<br/>
+            <span class="leg-time">${leg.depart} → ${leg.arrive}</span>
+        </div>`
+    ).join('');
+    el.className = 'result info';
+}
+
+function selectTrain(trainId) {
+    document.getElementById('bookTrainId').value = trainId;
+    document.querySelectorAll('.leg').forEach(l => l.style.background = '');
+    event.currentTarget.style.background = 'rgba(108,142,255,0.15)';
+}
 
     async function bookTicket() {
         const el = document.getElementById('bookResult');
