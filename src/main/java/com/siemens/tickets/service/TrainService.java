@@ -36,6 +36,13 @@ public class TrainService {
     }
 
     public Booking book(String trainId, LocalDate date, String email, int seats) {
+        if (date.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("Travel date cannot be in the past.");
+        }
+        if (seats < 1 || seats > 20) {
+            throw new IllegalArgumentException("Number of seats must be between 1 and 20.");
+        }
+
         Train train = trainRepository.findById(trainId)
                 .orElseThrow(() -> new IllegalArgumentException("Train not found: " + trainId));
 

@@ -170,7 +170,7 @@
             </div>
             <div class="form-row">
                 <div><label>Email</label><input id="bookEmail" type="email" placeholder="your@email.com"/></div>
-                <div><label>Seats</label><input id="bookSeats" type="number" min="1" max="10" value="1"/></div>
+                <div><label>Seats</label><input id="bookSeats" type="number" min="1" max="20" value="1"/></div>
             </div>
             <button class="btn btn-primary btn-full" onclick="bookTicket()">Book</button>
             <div id="bookResult" class="result"></div>
@@ -290,22 +290,33 @@ function selectTrain(trainId) {
 }
 
     async function bookTicket() {
-        const el = document.getElementById('bookResult');
-        const body = {
-            trainId: document.getElementById('bookTrainId').value,
-            date: document.getElementById('bookDate').value,
-            email: document.getElementById('bookEmail').value,
-            seats: parseInt(document.getElementById('bookSeats').value)
-        };
-        const res = await fetch('/api/bookings', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body)
-        });
-        const data = await res.json();
-        if (!res.ok) showResult(el, data.error, 'error');
-        else showResult(el, `✓ Booking confirmed! ID: ${data.bookingId} — confirmation sent to ${data.email}`, 'success');
+    const el = document.getElementById('bookResult');
+    const seats = parseInt(document.getElementById('bookSeats').value);
+    const date = document.getElementById('bookDate').value;
+
+    if (!date) { showResult(el, 'Please select a travel date.', 'error'); return; }
+    if (new Date(date) < new Date(new Date().toDateString())) {
+        showResult(el, 'Travel date cannot be in the past.', 'error'); return;
     }
+    if (seats < 1 || seats > 20) {
+        showResult(el, 'Number of seats must be between 1 and 20.', 'error'); return;
+    }
+
+    const body = {
+        trainId: document.getElementById('bookTrainId').value,
+        date: date,
+        email: document.getElementById('bookEmail').value,
+        seats: seats
+    };
+    const res = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    if (!res.ok) showResult(el, data.error, 'error');
+    else showResult(el, `✓ Booking confirmed! ID: ${data.bookingId} — confirmation sent to ${data.email}`, 'success');
+}
 
     async function adminLogin() {
         const user = document.getElementById('adminUser').value;
