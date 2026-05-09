@@ -71,22 +71,13 @@ The application will be available at `http://localhost:8080`. On first run, the 
 
 ---
 
-## Email — Limitations and Verified Recipients
+## Email — Known Limitation
 
-The deployed version uses Resend on the free plan. On this plan, outbound email is restricted: the `from` address uses Resend's shared `onboarding@resend.dev` domain, which only allows sending to the email address registered on the Resend account. This means the deployed version can reliably send emails only to the account owner's address.
+The deployed version uses Resend on the free plan. On this plan, the `from` address uses Resend's shared `onboarding@resend.dev` domain, which restricts delivery to only the email address registered on the Resend account. As a result, booking confirmations and delay notifications will only be reliably delivered to the account owner — not to arbitrary addresses entered by other users.
 
-To test email delivery end-to-end — both booking confirmations and delay notifications — use the addresses below. These have been verified against the Resend account used in the deployed version:
+If you are running the project locally with your own Resend account and a verified custom domain, this restriction does not apply and emails will be delivered to any address.
 
-**Verified addresses for testing:**
-
-| Purpose | Address |
-|---|---|
-| Booking confirmation | *(add your address here)* |
-| Delay notification | *(add your address here)* |
-
-If you are running the project locally with your own Resend account and a verified domain configured, this restriction does not apply and emails will be delivered to any address.
-
-To remove this restriction on the deployed version, a custom domain needs to be added and verified in Resend under **Domains**, and the `from` field in `ResendEmailService.java` updated accordingly.
+To remove this restriction on the deployed version, a custom domain needs to be verified in Resend under **Domains**, and the `from` field in `ResendEmailService.java` updated accordingly.
 
 ---
 
@@ -102,7 +93,11 @@ Select an origin and destination from the dropdowns. Click **Find Path**. If a r
 
 *(screenshots here)*
 
-Fill in the Train ID (or click a path leg to auto-fill), travel date, email address, and number of seats. Click **Book**. A confirmation email is sent to the provided address. The system blocks overbooking based on remaining capacity for that train and date.
+Fill in the Train ID (or click a path leg to auto-fill), travel date, email address, and number of seats. Click **Book**. The system blocks overbooking based on remaining capacity for that train and date. On success, a confirmation is shown in the UI and a confirmation email is sent to the provided address.
+
+*(screenshots of confirmation email here)*
+
+Note: due to the Resend free plan limitation described above, email delivery in the deployed version is restricted to the account owner's address.
 
 ### Admin — Login
 
@@ -121,6 +116,10 @@ Add a new train by providing an ID, name, capacity, and a list of stops in the f
 *(screenshots here)*
 
 Enter a Train ID and a delay description. All passengers who have booked that train receive an email notification.
+
+*(screenshots of delay email here)*
+
+Note: same Resend free plan restriction applies here.
 
 ### Admin — Bookings
 
