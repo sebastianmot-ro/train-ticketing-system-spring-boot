@@ -71,6 +71,25 @@ The application will be available at `http://localhost:8080`. On first run, the 
 
 ---
 
+## Email — Limitations and Verified Recipients
+
+The deployed version uses Resend on the free plan. On this plan, outbound email is restricted: the `from` address uses Resend's shared `onboarding@resend.dev` domain, which only allows sending to the email address registered on the Resend account. This means the deployed version can reliably send emails only to the account owner's address.
+
+To test email delivery end-to-end — both booking confirmations and delay notifications — use the addresses below. These have been verified against the Resend account used in the deployed version:
+
+**Verified addresses for testing:**
+
+| Purpose | Address |
+|---|---|
+| Booking confirmation | *(add your address here)* |
+| Delay notification | *(add your address here)* |
+
+If you are running the project locally with your own Resend account and a verified domain configured, this restriction does not apply and emails will be delivered to any address.
+
+To remove this restriction on the deployed version, a custom domain needs to be added and verified in Resend under **Domains**, and the `from` field in `ResendEmailService.java` updated accordingly.
+
+---
+
 ## How to Use
 
 ### Customer — Find Path
@@ -136,3 +155,27 @@ The core entities are `Train`, `RouteStop`, and `Booking`. A `Train` owns an ord
 ### Security
 
 Spring Security protects admin endpoints with HTTP Basic authentication. Public endpoints (station list, path search, booking creation) require no authentication. The admin credential is externalized to environment variables and never hardcoded in the repository.
+
+---
+
+## Further Development
+
+The current implementation covers the core requirements and is production-deployable, but several areas could be extended given more time.
+
+**Authentication:** The admin login is HTTP Basic over HTTPS, which is functional but minimal. A proper session-based or token-based authentication flow (JWT or Spring Session) would be more appropriate for a multi-user admin setup, and would also open the door to customer accounts with booking history.
+
+**Customer accounts:** Right now bookings are tied to an email address with no concept of identity. Introducing user registration and login would allow customers to view, manage, and cancel their own bookings.
+
+**Cancellations and refunds:** There is no cancellation flow. Adding one would require tracking booking status and, if payments were involved, integrating a refund mechanism.
+
+**Payments:** The booking flow completes without any payment step. Integrating a payment provider (Stripe being the most straightforward) would make the system closer to production-ready.
+
+**Path finding improvements:** The current BFS finds the path with the fewest legs. A weighted search (Dijkstra or A*) could optimize for total travel time instead, which is more useful when connections have long waiting times.
+
+**Date-aware routing:** The path search currently operates on times only, without considering dates. Overnight routes or routes spanning multiple days are not handled correctly.
+
+**Admin dashboard:** The admin interface is functional but minimal. A more complete dashboard would include filtering and searching bookings, per-train occupancy statistics, and a visual timetable editor.
+
+**Testing:** The project has no automated tests. Adding unit tests for `TrainService` (path finding logic, overbooking prevention) and integration tests for the REST endpoints would significantly improve reliability.
+
+**Email domain:** Moving off Resend's shared `onboarding@resend.dev` sender to a verified custom domain would remove the recipient restriction on the free plan and allow emails to be delivered to any address.
